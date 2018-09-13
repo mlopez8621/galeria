@@ -1,0 +1,26 @@
+{# Load the tag library #}
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <div class="col-md-4 col-sm-4 col-md-offset-4 col-sm-offset-4" >
+        {% block content %}
+            <form action="{% url 'images:addImage' %}" enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                {% buttons %}
+                    <input type="submit" value="Añadir" class="btn btn-primary btn-block" />
+                {% endbuttons %}
+            </form>
+        {% endblock %}
+    </div>
+</body>
+</html>
