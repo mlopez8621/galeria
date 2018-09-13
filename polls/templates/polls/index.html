@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script>
         (function() {
-            $.getJSON("http://localhost:8000/polls/images").done(function (data) {
-                $.each(data, function (i, item) {
-                    if (item.fields.imageFile == "" || item.fields.imageFile == undefined) {
-                        $("#imagenes").prepend('<div class="col-md-4 col-sm-6 col-lg-3 well"><img src="' + item.fields.url + '"class="img-responsive" style="width: 500px;heigth: 300px"></div>');
+            $.getJSON( "http://localhost:8000/polls/images" ).done(function( data ) {
+                $.each( data, function( i, item ) {
+                    if (item.fields.imageFile=="" || item.fields.imageFile==undefined) {
+                    $( "#imagenes" ).prepend('<div class="col-md-4 col-sm-6 col-lg-3 well"><img src="' + item.fields.url + '" class="img-responsive" style="width: 500px;height: 300px"></div>');
                     } else {
-                        $("#imagenes").prepend('<div class="col-md-4 col-sm-6 col-lg-3 well"><img src="http://localhost:8000/' + '"class="img-responsive" style="width: 500px;heigth: 300px"></div>');
+                    $( "#imagenes" ).prepend('<div class="col-md-4 col-sm-6 col-lg-3 well"><img src="http://localhost:8000/' + item.fields.imageFile + '" class="img-responsive" style="width: 500px;height: 300px"></div>');
                     }
 
                 });
@@ -41,7 +42,7 @@
 
     function logout() {
         $.getJSON( "http://localhost:8000/polls/logout" ).done(function ( data ) {
-            if (data.mesaje == "ok")
+            if (data.mensaje == "ok")
             {
                 location.reload();
             }
@@ -49,12 +50,8 @@
             {
                 alert("Hubo un error");
             }
-
         });
-
-    }
-
-
+        }
     </script>
 </head>
 <body>
@@ -75,7 +72,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li id="add_image"><a href="http://localhost:8000/polls/agregarImagen">Agregar imagen</a></li>
                 <li id="add_user"><a href="http://localhost:8000/polls/agregarUsuario">Registro</a></li>
-                <li id="cerrar_session"><a class="glyphicon glyphicon-log-out" href="#" id="click_cerrar_session" onclick="Logout();"> Logout</a></li>
+                <li id="cerrar_session"><a class="glyphicon glyphicon-log-out" href="#" id="click_cerrar_session" onclick="logout();"> Logout</a></li>
                 <li id="login_user"><a class="glyphicon glyphicon-log-in" href="http://localhost:8000/polls/ingresar"> Login</a></li>
             </ul>
         </div>
@@ -83,17 +80,6 @@
 </nav>
 <br><br>
 <h1 align="center">Galeria</h1>
-{% if user.is_authenticated %}
-<a href="{% url 'images:addImage' %}" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"> </span> Agregar imagen</a><br><br>
-{% endif %}
-    {% for imagen in lista_imagenes %}
-        <div class="col-md-4 col-sm-6 col-lg-3 well">
-            {% if imagen.imageFile == None %}
-                <img class="img-responsive" src="{{ imagen.url }}" width="400" height="300">
-            {% else %}
-                <img class="img-responsive" src="/{{ imagen.imageFile }}" width="500" height="300">
-            {% endif %}
-        </div>
-    {% endfor %}
+<div class="row" id="imagenes"></div>
 </body>
 </html>
