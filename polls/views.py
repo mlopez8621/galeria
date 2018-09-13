@@ -80,3 +80,15 @@ def islogged_view(request):
         mensaje = 'no'
 
     return JsonResponse({"mensaje":mensaje})
+
+def ver_imagenes(request):
+    return render(request, "polls/index.html")
+
+def agregar_imagen(request):
+    return render(request, "polls/image_form.html")
+
+def agregar_usuario(request):
+    return render(request, "polls/registro.html")
+
+def ingresar(request):
+    return render(request, "polls/login.html")

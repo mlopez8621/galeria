@@ -1,14 +1,61 @@
-{# Load the tag library #}
-{% load bootstrap3 %}
-
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script>
+        (function() {
+            $.getJSON("http://localhost:8000/polls/images").done(function (data) {
+                $.each(data, function (i, item) {
+                    if (item.fields.imageFile == "" || item.fields.imageFile == undefined) {
+                        $("#imagenes").prepend('<div class="col-md-4 col-sm-6 col-lg-3 well"><img src="' + item.fields.url + '"class="img-responsive" style="width: 500px;heigth: 300px"></div>');
+                    } else {
+                        $("#imagenes").prepend('<div class="col-md-4 col-sm-6 col-lg-3 well"><img src="http://localhost:8000/' + '"class="img-responsive" style="width: 500px;heigth: 300px"></div>');
+                    }
+
+                });
+            });
+        })();
+
+        (function () {
+            $.getJSON( "http://localhost:8000/polls/isLogged" ).done(function( data ) {
+                if (data.mensaje == "no")
+                {
+                    $("#add_user").show();
+                    $("#cerrar_session").hide();
+                    $("#add_image").hide();
+                    $("#login_user").show();
+                }
+                else
+                {
+                    $("#add_user").hide();
+                    $("#cerrar_session").show();
+                    $("#add_image").show();
+                    $("#login_user").hide();
+                }
+            });
+
+        })();
+
+    function logout() {
+        $.getJSON( "http://localhost:8000/polls/logout" ).done(function ( data ) {
+            if (data.mesaje == "ok")
+            {
+                location.reload();
+            }
+            else
+            {
+                alert("Hubo un error");
+            }
+
+        });
+
+    }
+
+
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -26,13 +73,10 @@
             <ul class="nav navbar-nav">
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                {% if user.is_authenticated %}
-                    <li><a class="glyphicon glyphicon-user" href="{% url 'images:index' %}"> {{ user.username }}</a></li>
-                    <li><a class="glyphicon glyphicon-log-out" href="{% url 'images:logout' %}"> Logout</a></li>
-                {% else %}
-                    <li><a href="{% url 'images:addUser' %}"> Registro</a></li>
-                    <li><a class="glyphicon glyphicon-log-in" href="{% url 'images:login' %}"> Login</a></li>
-                {% endif %}
+                <li id="add_image"><a href="http://localhost:8000/polls/agregarImagen">Agregar imagen</a></li>
+                <li id="add_user"><a href="http://localhost:8000/polls/agregarUsuario">Registro</a></li>
+                <li id="cerrar_session"><a class="glyphicon glyphicon-log-out" href="#" id="click_cerrar_session" onclick="Logout();"> Logout</a></li>
+                <li id="login_user"><a class="glyphicon glyphicon-log-in" href="http://localhost:8000/polls/ingresar"> Login</a></li>
             </ul>
         </div>
     </div>
