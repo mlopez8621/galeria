@@ -80,9 +80,9 @@ WSGI_APPLICATION = 'galeria.wsgi.application'
 DATABASES = {
     'default': {
        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-       'NAME': 'galeria2',
-       'USER': 'mainuser',
-       'PASSWORD': '123456',
+       'NAME': 'polls',
+       'USER': 'postgres',
+       'PASSWORD': 'postgres',
        'HOST': 'localhost',
        'PORT': '5432'
     }
